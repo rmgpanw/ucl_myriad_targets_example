@@ -27,3 +27,5 @@ logs/
 
 # Output
 output/
+
+/.quarto/
