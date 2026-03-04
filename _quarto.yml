@@ -1,0 +1,12 @@
+project:
+  type: website
+  output-dir: public
+
+website:
+  title: "UCL MYRIAD Targets Example"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: analyses/results.qmd
+        text: Results

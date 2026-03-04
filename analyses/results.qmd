@@ -1,0 +1,29 @@
+---
+title: "Results"
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(targets)
+library(dplyr)
+```
+
+## Summary Table
+
+```{r}
+#| label: summary-table
+summary_df <- tar_read(summary_table)
+knitr::kable(summary_df, digits = 4)
+```
+
+## Timing
+
+```{r}
+#| label: timing
+cat(
+  "Total items:", nrow(summary_df), "\n",
+  "Mean elapsed (s):", round(mean(summary_df$elapsed_secs), 1), "\n",
+  "Unique workers:", length(unique(summary_df$worker_pid)), "\n"
+)
+```

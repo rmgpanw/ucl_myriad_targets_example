@@ -1,0 +1,27 @@
+---
+title: "UCL MYRIAD Targets Example"
+---
+
+Minimal [targets](https://docs.ropensci.org/targets/) pipeline for testing
+`crew.cluster::crew_controller_sge()` with Singularity on UCL MYRIAD.
+
+## Purpose
+
+Verify the full HPC workflow before migrating a production pipeline:
+
+1. Build container locally
+2. Upload `.sif` to MYRIAD
+3. Submit controller job
+4. SGE workers launch inside Singularity
+5. All targets complete
+6. Quarto website renders
+
+## Usage
+
+```r
+# Local (default)
+targets::tar_make()
+
+# On MYRIAD: edit _targets_config.R to use SGE controller, then
+# qsub scripts/run_pipeline_myriad.sh
+```

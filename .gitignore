@@ -1,0 +1,29 @@
+# R
+.Rhistory
+.Rdata
+.RData
+.Rproj.user/
+
+# targets
+_targets/
+_targets.yaml
+
+# Quarto
+public/
+.quarto/
+*_files/
+
+# renv
+renv/library/
+renv/staging/
+renv/python/
+renv/sandbox/
+
+# Singularity
+*.sif
+
+# Logs
+logs/
+
+# Output
+output/
