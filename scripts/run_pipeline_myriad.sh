@@ -28,7 +28,7 @@ module load apptainer
 apptainer exec \
   --bind "${PROJECT_DIR}:${PROJECT_DIR}" \
   --bind "/opt/sge:/opt/sge" \
-  --bind "/lib64:/lib64:ro" \
+  --bind "/lib64:/host_lib64:ro" \
   --bind "/shared/ucl/apps/gcc/4.9.2/lib64:/host_gcc_lib64:ro" \
   --env RENV_ACTIVATE_PROJECT=FALSE \
   --env TMPDIR="${PROJECT_DIR}/tmp" \
@@ -37,6 +37,6 @@ apptainer exec \
   --env SGE_QMASTER_PORT="6444" \
   --env SGE_EXECD_PORT="6445" \
   --env PATH="/opt/sge/bin/lx-amd64:${PATH}" \
-  --env LD_LIBRARY_PATH="/lib64:/host_gcc_lib64:${LD_LIBRARY_PATH}" \
+  --env LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/host_lib64:/host_gcc_lib64" \
   "${SIF}" \
   Rscript -e "setwd('${PROJECT_DIR}'); targets::tar_make()"
