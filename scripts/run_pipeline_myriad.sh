@@ -16,13 +16,16 @@ set -euo pipefail
 PROJECT_DIR="/home/${USER}/Scratch/ucl_myriad_targets_example"
 SIF="${PROJECT_DIR}/ucl_myriad_targets_example.sif"
 
-# Create logs directory
-mkdir -p "${PROJECT_DIR}/logs"
+# Create logs and tmp directories
+mkdir -p "${PROJECT_DIR}/logs" "${PROJECT_DIR}/tmp"
 
 module load apptainer
 
+# TMPDIR: SGE sets this to a node-local path that doesn't exist inside the
+# container, causing Quarto (Deno) to fail. Override with a project-local tmp.
 apptainer exec \
   --bind "${PROJECT_DIR}:${PROJECT_DIR}" \
   --env RENV_ACTIVATE_PROJECT=FALSE \
+  --env TMPDIR="${PROJECT_DIR}/tmp" \
   "${SIF}" \
   Rscript -e "setwd('${PROJECT_DIR}'); targets::tar_make()"

@@ -28,4 +28,7 @@ logs/
 # Output
 output/
 
+# Temp (container TMPDIR override)
+tmp/
+
 /.quarto/
