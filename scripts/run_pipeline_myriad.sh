@@ -8,34 +8,20 @@
 #$ -o logs/controller.log
 #$ -e logs/controller.err
 
-# Controller job — submits SGE workers via crew.cluster
-# Workers are launched by crew, not by this script.
+# Controller job — runs NATIVELY (not in container) so it can call qsub.
+# Workers are submitted by crew.cluster and run inside the Apptainer container
+# via script_lines in _targets_config.R.
 
 set -euo pipefail
 
 PROJECT_DIR="/home/${USER}/Scratch/ucl_myriad_targets_example"
-SIF="${PROJECT_DIR}/ucl_myriad_targets_example.sif"
 
 # Create logs and tmp directories
 mkdir -p "${PROJECT_DIR}/logs" "${PROJECT_DIR}/tmp"
 
-module load apptainer
+# Use MYRIAD's system R (needs targets, crew, crew.cluster installed)
+module purge
+module load r/4.5.1-openblas/gnu-10.2.0
 
-# TMPDIR: SGE sets this to a node-local path that doesn't exist inside the
-# container, causing Quarto (Deno) to fail. Override with a project-local tmp.
-# /opt/sge: crew.cluster needs qsub to submit worker jobs from inside the
-# container. Bind-mount the SGE installation and forward its env vars.
-apptainer exec \
-  --bind "${PROJECT_DIR}:${PROJECT_DIR}" \
-  --bind "/opt/sge:/opt/sge" \
-  --bind "/lib64:/host_lib64:ro" \
-  --bind "/shared/ucl/apps/gcc/4.9.2/lib64:/host_gcc_lib64:ro" \
-  --env RENV_ACTIVATE_PROJECT=FALSE \
-  --env TMPDIR="${PROJECT_DIR}/tmp" \
-  --env SGE_ROOT="/opt/sge" \
-  --env SGE_CELL="default" \
-  --env SGE_QMASTER_PORT="6444" \
-  --env SGE_EXECD_PORT="6445" \
-  --env PATH="${PROJECT_DIR}/scripts/wrappers:${PATH}" \
-  "${SIF}" \
-  Rscript -e "setwd('${PROJECT_DIR}'); targets::tar_make()"
+cd "${PROJECT_DIR}"
+Rscript -e "targets::tar_make()"
