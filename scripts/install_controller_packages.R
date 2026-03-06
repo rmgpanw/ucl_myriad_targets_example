@@ -15,15 +15,15 @@
 #     and sourced helper functions (needed at pipeline-definition time)
 
 pkgs <- c(
-
-"targets",
+  "targets",
   "tarchetypes",
   "crew",
   "crew.cluster",
   "dplyr",
   "purrr",
   "rlang",
-  "cli"
+  "cli",
+  "quarto"
 )
 
 # Use P3M binary repo for faster installs

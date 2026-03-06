@@ -15,7 +15,7 @@ tar_option_set(
   controller = controller
 )
 
-list(
+targets_list <- list(
   # 10 items for branching
   tar_target(items, paste0("item_", sprintf("%02d", 1:10))),
 
@@ -29,7 +29,6 @@ list(
   ),
 
   # Branched analysis — one per item
-
   tar_target(
     analysis,
     run_analysis(items, raw_data),
@@ -44,8 +43,12 @@ list(
   tar_target(
     summary_table,
     make_summary(analysis)
-  ),
-
-  # Render Quarto website
-  tar_quarto(website, path = ".")
+  )
 )
+
+# Quarto website — skip if Quarto CLI is not available (e.g. on HPC controller)
+if (nzchar(Sys.which("quarto"))) {
+  targets_list <- c(targets_list, list(tar_quarto(website, path = ".")))
+}
+
+targets_list
