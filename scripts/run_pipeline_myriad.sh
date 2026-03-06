@@ -36,7 +36,6 @@ apptainer exec \
   --env SGE_CELL="default" \
   --env SGE_QMASTER_PORT="6444" \
   --env SGE_EXECD_PORT="6445" \
-  --env PATH="/opt/sge/bin/lx-amd64:${PATH}" \
-  --env LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/host_lib64:/host_gcc_lib64" \
+  --env PATH="${PROJECT_DIR}/scripts/wrappers:${PATH}" \
   "${SIF}" \
   Rscript -e "setwd('${PROJECT_DIR}'); targets::tar_make()"

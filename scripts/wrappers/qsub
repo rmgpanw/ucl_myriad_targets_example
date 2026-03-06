@@ -1,0 +1,5 @@
+#!/bin/bash
+# Wrapper: sets RHEL LD_LIBRARY_PATH only for qsub, not for the whole container.
+# This avoids glibc conflicts between the RHEL host and Ubuntu container.
+exec env LD_LIBRARY_PATH="/host_lib64:/host_gcc_lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+  /opt/sge/bin/lx-amd64/qsub "$@"
