@@ -48,12 +48,14 @@ controller <- crew.cluster::crew_controller_sge(
     "#$ -pe smp 1",
     paste0("#$ -wd ", project_dir),
     "module load apptainer",
+    # Trailing backslash: crew appends "Rscript -e 'crew::crew_worker(...)'"
+    # on the next line, so it becomes the command argument to apptainer exec.
     paste0(
       "apptainer exec",
       " --bind ", project_dir, ":", project_dir,
       " --env RENV_ACTIVATE_PROJECT=FALSE",
       " --env TMPDIR=", project_dir, "/tmp",
-      " ", sif_path
+      " ", sif_path, " \\"
     )
   ),
   sge_log_output = file.path(project_dir, "logs/"),
