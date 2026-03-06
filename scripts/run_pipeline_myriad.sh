@@ -19,9 +19,10 @@ SIF="${PROJECT_DIR}/ucl_myriad_targets_example.sif"
 # Create logs directory
 mkdir -p "${PROJECT_DIR}/logs"
 
-module load singularity-env
+module load apptainer
 
-singularity exec \
+apptainer exec \
   --bind "${PROJECT_DIR}:${PROJECT_DIR}" \
+  --env RENV_ACTIVATE_PROJECT=FALSE \
   "${SIF}" \
   Rscript -e "setwd('${PROJECT_DIR}'); targets::tar_make()"
