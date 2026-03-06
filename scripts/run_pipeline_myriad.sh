@@ -23,9 +23,15 @@ module load apptainer
 
 # TMPDIR: SGE sets this to a node-local path that doesn't exist inside the
 # container, causing Quarto (Deno) to fail. Override with a project-local tmp.
+# /opt/sge: crew.cluster needs qsub to submit worker jobs from inside the
+# container. Bind-mount the SGE installation and forward its env vars.
 apptainer exec \
   --bind "${PROJECT_DIR}:${PROJECT_DIR}" \
+  --bind "/opt/sge:/opt/sge" \
   --env RENV_ACTIVATE_PROJECT=FALSE \
   --env TMPDIR="${PROJECT_DIR}/tmp" \
+  --env SGE_ROOT="${SGE_ROOT}" \
+  --env SGE_CELL="${SGE_CELL}" \
+  --env PATH="/opt/sge/bin/lx-amd64:${PATH}" \
   "${SIF}" \
   Rscript -e "setwd('${PROJECT_DIR}'); targets::tar_make()"
