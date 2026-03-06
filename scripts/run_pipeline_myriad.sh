@@ -32,8 +32,10 @@ apptainer exec \
   --bind "/shared/ucl/apps/gcc/4.9.2/lib64:/host_gcc_lib64:ro" \
   --env RENV_ACTIVATE_PROJECT=FALSE \
   --env TMPDIR="${PROJECT_DIR}/tmp" \
-  --env SGE_ROOT="${SGE_ROOT}" \
-  --env SGE_CELL="${SGE_CELL}" \
+  --env SGE_ROOT="/opt/sge" \
+  --env SGE_CELL="default" \
+  --env SGE_QMASTER_PORT="6444" \
+  --env SGE_EXECD_PORT="6445" \
   --env PATH="/opt/sge/bin/lx-amd64:${PATH}" \
   --env LD_LIBRARY_PATH="/lib64:/host_gcc_lib64:${LD_LIBRARY_PATH}" \
   "${SIF}" \
