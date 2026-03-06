@@ -28,10 +28,12 @@ module load apptainer
 apptainer exec \
   --bind "${PROJECT_DIR}:${PROJECT_DIR}" \
   --bind "/opt/sge:/opt/sge" \
+  --bind "/usr/lib64/libmunge.so.2:/usr/lib64/libmunge.so.2:ro" \
   --env RENV_ACTIVATE_PROJECT=FALSE \
   --env TMPDIR="${PROJECT_DIR}/tmp" \
   --env SGE_ROOT="${SGE_ROOT}" \
   --env SGE_CELL="${SGE_CELL}" \
   --env PATH="/opt/sge/bin/lx-amd64:${PATH}" \
+  --env LD_LIBRARY_PATH="/usr/lib64:${LD_LIBRARY_PATH}" \
   "${SIF}" \
   Rscript -e "setwd('${PROJECT_DIR}'); targets::tar_make()"
