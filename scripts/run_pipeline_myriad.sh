@@ -21,7 +21,7 @@ mkdir -p "${PROJECT_DIR}/logs" "${PROJECT_DIR}/tmp"
 
 # Use MYRIAD's system R (needs targets, crew, crew.cluster installed)
 module purge
-module load r/4.5.1-openblas/gnu-10.2.0
+module load r/4.4.2-openblas/gnu-10.2.0
 
 cd "${PROJECT_DIR}"
 Rscript -e "targets::tar_make()"
